@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:web_response_cache/web_cache_document.dart';
 import 'package:web_response_cache/web_cache_type/abstract_web_cache_type.dart';
 
+/// Core class for creating a new web request using the package cache system.
 class CachedWebRequest {
 
   /// The subfolder name used for the folder where cache files get stored.
@@ -82,6 +83,7 @@ class CachedWebRequest {
     return File('${folder.path}/${getFileName()}');
   }
 
+  /// Saves the given [response] into the corresponding persistent [WebCacheDocument].
   Future<void> saveNewCacheResponse(Response response) async {
     final cacheDocument = WebCacheDocument(creationDate: DateTime.now(), responseValue: response.body);
     final folder = await getSaveFolder();
@@ -107,6 +109,7 @@ class CachedWebRequest {
   /// The name which will be used for generating a [WebCacheDocument] file.
   String getFileName() => '${url.replaceAll(RegExp(r'[/:.]'), '')}.json';
 
+  /// Loads the corresponding [WebCacheDocument] for the given request [url].
   Future<WebCacheDocument> loadCachedDocument() async {
     final cacheFile = await getCacheFile();
     final jsonContent = await cacheFile.readAsString();
