@@ -2,6 +2,10 @@
 This package is used for caching responses obtained from web requests.
 There are no limitations in which representations (such as JSON, HTML, XML, ...) are cached. All major HTTP verbs such as GET, POST, PUT and DELETE are supported.
 
+The cache will be used whenever
+ - the given cache type is still in charge of being used (like when the duration of a time cache has not been reached)
+ - a new request did not respond with a successful result
+
 It is currently planned to extend the package with more cache types as well as more cache-related fields in the future.
 Feel free to send ideas and feedback using the [GitHub Issue Board](https://github.com/Schloool/web-response-cache-flutter/issues).
 
