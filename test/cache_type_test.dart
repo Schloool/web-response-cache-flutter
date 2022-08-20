@@ -9,23 +9,32 @@ void main() {
   setUp(() => CachedWebRequest.clearCache());
 
   group('Test timed cache', () {
-    test('Test duration timeout', () async {
+    test('Test time cache', () async {
       const testUrl = 'http://worldtimeapi.org/api/timezone/Europe/Berlin';
-      final request = CachedWebRequest(url: testUrl, webCacheType: TimeWebCacheType(cacheDuration: const Duration(milliseconds: 100)));
+      final request = CachedWebRequest(url: testUrl, webCacheType: TimeWebCacheType(cacheDuration: const Duration(days: 1)));
       expect(await request.hasCachedDocument(), false);
 
       var response = await request.startRequest();
       final firstContent = response.body;
       expect(request.isValidResponse(response), true);
 
-      await Future.delayed(const Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 100));
       response = await request.startRequest();
       expect(response.body, firstContent);
+    });
 
-      await Future.delayed(const Duration(milliseconds: 50));
+    test('Test duration timeout', () async {
+      const testUrl = 'http://worldtimeapi.org/api/timezone/Europe/Berlin';
+      final request = CachedWebRequest(url: testUrl, webCacheType: TimeWebCacheType(cacheDuration: const Duration(milliseconds: 50)));
+      expect(await request.hasCachedDocument(), false);
+
+      var response = await request.startRequest();
+      final firstContent = response.body;
+      expect(request.isValidResponse(response), true);
+
+      await Future.delayed(const Duration(milliseconds: 100));
       response = await request.startRequest();
       expect(response.body != firstContent, true);
     });
-
   });
 }

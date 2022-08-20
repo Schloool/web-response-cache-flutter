@@ -25,8 +25,7 @@ class CachedWebRequest {
   ///
   /// HTTP methods such as GET, POST or PUT or DELETE can be easily set if needed.
   /// However, as mostly only GET should be cached, GET is set as the application default.
-  Future<Response> Function(Uri uri, {Map<String,
-      String>? headers}) responseFunction;
+  Future<Response> Function(Uri uri, {Map<String, String>? headers}) responseFunction;
 
   CachedWebRequest({required this.url, required this.webCacheType, this.headers, this.responseFunction = get});
 
@@ -46,7 +45,8 @@ class CachedWebRequest {
   /// The resulting [Response] will either be obtained from a valid cache file or a web request.
   /// If a valid web [Response] has been sent, it will be saved in the cache.
   Future<Response> startRequest() async {
-    if (await hasCachedDocument()) {
+    final currentlyHasCachedDocument = await hasCachedDocument();
+    if (currentlyHasCachedDocument) {
       final WebCacheDocument cacheDocument = await loadCachedDocument();
       if (webCacheType.useCachedDocument(cacheDocument)) {
         return Response(cacheDocument.responseValue, 200);
@@ -62,6 +62,9 @@ class CachedWebRequest {
       Response response = await responseFunction.call(Uri.parse(url), headers: headers);
       if (isValidResponse(response)) {
         await saveNewCacheResponse(response);
+      } else if (currentlyHasCachedDocument) {
+        // if the response was not valid and there are save-data, use them anyways
+        response = Response((await loadCachedDocument()).responseValue, 200);
       }
 
       return response;
@@ -116,5 +119,12 @@ class CachedWebRequest {
     final json = jsonDecode(jsonContent);
 
     return WebCacheDocument.fromJson(json);
+  }
+
+  /// Deletes the cache file for the request.
+  Future<void> deleteCacheDocument() async {
+    if (await hasCachedDocument()) {
+      await (await getCacheFile()).delete();
+    }
   }
 }

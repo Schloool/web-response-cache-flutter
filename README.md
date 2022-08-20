@@ -1,39 +1,26 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Introduction
+This package is used for caching responses obtained from web requests.
+There are no limitations in which representations (such as JSON, HTML, XML, ...) are cached. All major HTTP verbs such as GET, POST, PUT and DELETE are supported.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+It is currently planned to extend the package with more cache types as well as more cache-related fields in the future.
+Feel free to send ideas and feedback using the [GitHub Issue Board](https://github.com/Schloool/web-response-cache-flutter/issues).
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+## Example
+Using a simple time cache for a JSON response:
+````
+const testUrl = 'http://worldtimeapi.org/api/timezone/Europe/Berlin';
+final cachedRequest = CachedWebRequest(url: testUrl, webCacheType: TimeWebCacheType(cacheDuration: const Duration(days: 1)));
+var response = await cachedRequest.startRequest();
+...
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+// response body will have the same body content for the duration of one day
+response = await cachedRequest.startRequest();
+````
 
-## Features
+## Dependencies
+ - [http](https://pub.dev/packages/http) (used for sending HTTP requests)
+ - [path_provider](https://pub.dev/packages/path_provider) (used for getting the temporary cache directory)
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
-```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## Contributing
+Contributions to the [GitHub Repository](https://github.com/Schloool/web-response-cache-flutter) are very welcomed.
+I also appreciate feature requests as well as bug reports using the [GitHub Issue Board](https://github.com/Schloool/web-response-cache-flutter/issues).
