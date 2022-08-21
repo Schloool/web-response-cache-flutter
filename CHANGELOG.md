@@ -1,3 +1,6 @@
+## 0.0.4
+* Add support for custom cache serialization
+
 ## 0.0.3
 * Rename utility cache functions and fix functionality
 * Add utility function tests and extend other tests
