@@ -7,7 +7,9 @@ void main() {
     final documentJson = testDocument.toJson();
     final parsedDocument = WebCacheDocument.fromJson(documentJson);
 
-    expect(testDocument.responseValue, parsedDocument.responseValue);
-    expect(testDocument.creationDate.millisecondsSinceEpoch, parsedDocument.creationDate.millisecondsSinceEpoch);
+    expect(testDocument.responseValue, parsedDocument.responseValue,
+        reason: 'Response values should match when deserializing the object');
+    expect(testDocument.creationDate.millisecondsSinceEpoch, parsedDocument.creationDate.millisecondsSinceEpoch,
+        reason: 'Time values should match when deserializing the object');
   });
 }

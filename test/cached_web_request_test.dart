@@ -13,7 +13,8 @@ void main() {
       final request = CachedWebRequest(url: invalidUrl, webCacheType: cacheType);
       final response = await request.startRequest();
 
-      expect(request.isValidResponse(response), false);
+      expect(request.isValidResponse(response), false,
+          reason: 'An invalid URL has been used');
       expect(response.statusCode, 500);
     });
 
@@ -22,7 +23,8 @@ void main() {
       final request = CachedWebRequest(url: unavailableUrl, webCacheType: cacheType);
       final response = await request.startRequest();
 
-      expect(request.isValidResponse(response), false);
+      expect(request.isValidResponse(response), false,
+          reason: 'An unavailable URL has been used');
       expect(response.statusCode, 500);
     });
 
@@ -31,7 +33,7 @@ void main() {
       final request = CachedWebRequest(url: unavailableUrl, webCacheType: cacheType);
       final response = await request.startRequest();
 
-      expect(request.isValidResponse(response), true);
+      expect(request.isValidResponse(response), true, reason: 'The used URL is valid and available');
       expect(response.statusCode, 200);
     });
   });
@@ -39,12 +41,14 @@ void main() {
   test('Test response file save', () async {
     const url = 'https://google.com/';
     final request = CachedWebRequest(url: url, webCacheType: cacheType);
-    expect(await request.hasCachedDocument(), false);
+    expect(await request.hasCachedDocument(), false,
+        reason: 'When starting the app for the first time, no cache document should exist for the URL');
     expect(await (await request.getCacheFile()).exists(), false);
 
     final response = await request.startRequest();
     expect(request.isValidResponse(response), true);
-    expect(await request.hasCachedDocument(), true);
+    expect(await request.hasCachedDocument(), true,
+        reason: 'When the response was successful, a cache document should have been created');
     expect(await (await request.getCacheFile()).exists(), true);
   });
 }

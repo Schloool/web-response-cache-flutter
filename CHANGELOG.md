@@ -1,3 +1,7 @@
+## 0.0.3
+* Rename utility cache functions and fix functionality
+* Add utility function tests and extend other tests
+
 ## 0.0.2
 * Add new utility cache types
 
