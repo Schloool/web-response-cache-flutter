@@ -88,7 +88,7 @@ class CachedWebRequest {
 
   /// Saves the given [response] into the corresponding persistent [WebCacheDocument].
   Future<void> saveNewCacheResponse(Response response) async {
-    final cacheDocument = WebCacheDocument(creationDate: DateTime.now(), responseValue: serializeResponseBody(response.body));
+    final cacheDocument = WebCacheDocument(creationDate: DateTime.now(), responseValue: serializeResponseBody(response));
     final folder = await getSaveFolder();
     final file = await getCacheFile();
 
@@ -104,10 +104,10 @@ class CachedWebRequest {
     await file.writeAsString(jsonContent);
   }
 
-  /// Function used to get the serialized form of a valid response body.
+  /// Function used to get the serialized form of a valid response.
   ///
   /// Can be overwritten to realize a custom serialization logic.
-  String serializeResponseBody(String responseBody) => responseBody;
+  String serializeResponseBody(Response response) => response.body;
 
   /// Whether this [CachedWebRequest] already has a cached [WebCacheDocument] or not.
   ///
