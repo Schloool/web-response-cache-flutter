@@ -6,14 +6,17 @@ class WebCacheDocument {
   /// The [DateTime] at which the document was created.
   final DateTime creationDate;
 
+  final Map<String, String> headers;
+
   /// The value of the response body that has been saved.
   final String responseValue;
 
-  WebCacheDocument({required this.creationDate, required this.responseValue});
+  WebCacheDocument({required this.creationDate, required this.headers, required this.responseValue});
 
   factory WebCacheDocument.fromJson(Map<String, dynamic> json) {
     return WebCacheDocument(
       creationDate: DateTime.fromMillisecondsSinceEpoch(json['creationDate']),
+      headers: json['headers'],
       responseValue: json['responseValue'],
     );
   }
@@ -21,6 +24,7 @@ class WebCacheDocument {
   Map<String, dynamic> toJson() {
     return {
       'creationDate': creationDate.millisecondsSinceEpoch,
+      'headers': headers,
       'responseValue': responseValue,
     };
   }

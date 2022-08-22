@@ -89,7 +89,7 @@ class CachedWebRequest {
 
   /// Saves the given [response] into the corresponding persistent [WebCacheDocument].
   Future<void> saveNewCacheResponse(Response response) async {
-    final cacheDocument = WebCacheDocument(creationDate: DateTime.now(), responseValue: serializeResponseBody(response));
+    final cacheDocument = WebCacheDocument(creationDate: DateTime.now(), headers: response.headers, responseValue: serializeResponseBody(response));
     final folder = await getSaveFolder();
     final file = await getCacheFile();
 
