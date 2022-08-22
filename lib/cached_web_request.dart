@@ -50,7 +50,7 @@ class CachedWebRequest {
     if (currentlyHasCachedDocument) {
       final WebCacheDocument cacheDocument = await loadCachedDocument();
       if (webCacheType.useCachedDocument(cacheDocument) && !forceNewRequest) {
-        return Response(cacheDocument.responseValue, 200);
+        return buildResponseFromDocument(cacheDocument);
       }
     }
 
@@ -65,13 +65,17 @@ class CachedWebRequest {
         await saveNewCacheResponse(response);
       } else if (currentlyHasCachedDocument) {
         // if the response was not valid and there are save-data, use them anyways
-        response = Response((await loadCachedDocument()).responseValue, 200);
+        response = buildResponseFromDocument(await loadCachedDocument());
       }
 
       return response;
     } catch (e) {
       return Response('An error occurred while performing the request.', 500);
     }
+  }
+
+  Response buildResponseFromDocument(WebCacheDocument document) {
+    return Response(document.responseValue, 200, headers: document.headers);
   }
 
   /// Function used to validate whether a given response is valid for being saved in a [WebCacheDocument].
