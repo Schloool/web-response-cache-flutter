@@ -44,11 +44,12 @@ class CachedWebRequest {
   ///
   /// The resulting [Response] will either be obtained from a valid cache file or a web request.
   /// If a valid web [Response] has been sent, it will be saved in the cache.
-  Future<Response> startRequest() async {
+  /// If setting [forceNewRequest] to true, not using the cache will be prioritized.
+  Future<Response> startRequest({bool forceNewRequest = false}) async {
     final currentlyHasCachedDocument = await hasCachedDocument();
     if (currentlyHasCachedDocument) {
       final WebCacheDocument cacheDocument = await loadCachedDocument();
-      if (webCacheType.useCachedDocument(cacheDocument)) {
+      if (webCacheType.useCachedDocument(cacheDocument) && !forceNewRequest) {
         return Response(cacheDocument.responseValue, 200);
       }
     }
