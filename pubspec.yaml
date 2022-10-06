@@ -1,6 +1,6 @@
 name: web_response_cache
 description: A Flutter package offering multiple ways to cache responses obtained from web requests.
-version: 0.0.3
+version: 0.0.4
 repository: https://github.com/Schloool/web-response-cache-flutter
 
 environment:
