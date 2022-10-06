@@ -65,11 +65,16 @@ class CachedWebRequest {
         await saveNewCacheResponse(response);
       } else if (currentlyHasCachedDocument) {
         // if the response was not valid and there are save-data, use them anyways
-        response = buildResponseFromDocument(await loadCachedDocument());
+        return buildResponseFromDocument(await loadCachedDocument());
       }
 
       return response;
     } catch (e) {
+
+      if (currentlyHasCachedDocument) {
+        return buildResponseFromDocument(await loadCachedDocument());
+      }
+
       return Response('An error occurred while performing the request.', 500);
     }
   }
