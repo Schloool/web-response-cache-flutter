@@ -16,7 +16,8 @@ class WebCacheDocument {
   factory WebCacheDocument.fromJson(Map<String, dynamic> json) {
     return WebCacheDocument(
       creationDate: DateTime.fromMillisecondsSinceEpoch(json['creationDate']),
-      headers: (json['headers'] as Map).cast<String, String>(),
+      headers: (json['headers'] is Map) ?
+        (json['headers'] as Map).cast<String, String>() : {},
       responseValue: json['responseValue'],
     );
   }
